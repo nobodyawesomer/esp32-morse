@@ -1,0 +1,6 @@
+# Build artifacts
+build/
+
+# Logs & Configs
+.vscode/*.log
+sdkconfig*
