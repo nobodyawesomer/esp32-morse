@@ -1,20 +1,18 @@
 menu "Application Configuration"
 
-    choice BLINK_LED
-        prompt "Blink LED type"
-        default BLINK_LED_GPIO if IDF_TARGET_ESP32
-        default BLINK_LED_RMT
+    choice IDLE_ANIM
+        prompt "Idle LED Animation Style"
+        default IDLE_ANIM_BREATHE
         help
-            Defines the default peripheral for blink example
-
-        config BLINK_LED_GPIO
-            bool "GPIO"
-        config BLINK_LED_RMT
-            bool "RMT - Addressable LED"
+            Determines the LED's Idle animation style.
+        
+        config IDLE_ANIM_RAINBOW
+            bool "Rainbow"
+        config IDLE_ANIM_BREATHE
+            bool "Softly 'breathing' on and off"
     endchoice
 
     config BLINK_LED_RMT_CHANNEL
-        depends on BLINK_LED_RMT
         int "RMT Channel"
         range 0 7
         default 0
@@ -36,11 +34,11 @@ menu "Application Configuration"
             GPIO number (IOxx) to blink on and off or the RMT signal for the addressable LED.
             Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to blink.
 
-    config BLINK_PERIOD
-        int "Blink period in ms"
-        range 10 3600000
-        default 1000
+    config REFRESH_RATE
+        int "Refresh rate in ms"
+        range 1 3600000
+        default 50
         help
-            Define the blinking period in milliseconds.
+            Define the refresh rate in milliseconds.
 
 endmenu

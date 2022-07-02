@@ -20,10 +20,18 @@ const uint32_t COLOR_CAP = 24;
 
 static void idle_led(void)
 {
-    float led_brightness = (cos(naive_tick_timer * 3.141592 / 32) + 1) / 2;
-    // ESP_LOGD(TAG, "Light level at %d from %.4f", (uint32_t)(led_brightness * COLOR_CAP), led_brightness);
-    /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
+    const float PI = 3.14159265358979323846264;
+    float theta = 2 * PI * naive_tick_timer / 64; // 'sample rate' 64 per period. 360 would mean naive_tick_timer is degrees.
+#ifdef CONFIG_IDLE_ANIM_BREATHE
+    float led_brightness = (cos(theta) + 1) / 2;
     pStrip_a->set_pixel(pStrip_a, 0, led_brightness * COLOR_CAP, led_brightness * COLOR_CAP, led_brightness * COLOR_CAP);
+    // ESP_LOGD(TAG, "Light level at %d from %.4f", (uint32_t)(led_brightness * COLOR_CAP), led_brightness);
+#else
+    float red = (cos(theta) + 1) / 2;
+    float green = (cos(theta + 2 * PI / 3) + 1) / 2;
+    float blue = (cos(theta + 4 * PI / 3) + 1) / 2;
+    pStrip_a->set_pixel(pStrip_a, 0, red * COLOR_CAP, green * COLOR_CAP, blue * COLOR_CAP);
+#endif
     /* Refresh the strip to send data */
     pStrip_a->refresh(pStrip_a, 100);
 }
@@ -40,7 +48,7 @@ static void configure_led(void)
 void app_main(void)
 {
 
-    /* Configure the peripheral according to the LED type */
+    /* Configure the peripheral */
     configure_led();
     // blink_char(pStrip_a, encode_morse('A'));
     blink_str(pStrip_a, "CQ CQ MA NAME JEFF R");
@@ -50,6 +58,6 @@ void app_main(void)
     {
         idle_led();
         naive_tick_timer++;
-        vTaskDelay(50 / portTICK_PERIOD_MS); // TODO: configify
+        vTaskDelay(CONFIG_REFRESH_RATE / portTICK_PERIOD_MS);
     }
 }
