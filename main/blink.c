@@ -33,7 +33,7 @@ void led_strip_off(led_strip_t *strip)
 
 void wait_units(uint8_t units)
 {
-	vTaskDelay(units * UNIT_MILLIS / portTICK_PERIOD_MS);
+	vTaskDelay(units * CONFIG_MORSE_UNIT_MS / portTICK_PERIOD_MS);
 }
 
 void blink_char(led_strip_t *strip, morse_char_t mchar)

@@ -10,7 +10,15 @@
  */
 #ifndef __MORSE_H
 #define __MORSE_H
+#include <stddef.h>
 #include <stdint.h>
+
+#define MAX_SYMBOLS_CHAR ((size_t)8) ///< Maximum symbols that can represent a character in Morse
+
+// TODO: configify this
+#define SYMBOL_SPACE 1 ///< The gap between two symbols (dit/dah)
+#define CHAR_SPACE 3	 ///< The gap between two characters within a word
+#define WORD_SPACE 7	 ///< The gap between two words
 
 #define DIT ((uint8_t)1) ///< Morse "dit"/dot
 #define DAH ((uint8_t)3) ///< Morse "dah"/dash
@@ -24,7 +32,7 @@
 typedef struct morse_char_s
 {
 	char orig;
-	uint8_t symbols[8];
+	uint8_t symbols[MAX_SYMBOLS_CHAR];
 } morse_char_t;
 
 /**
@@ -34,13 +42,5 @@ typedef struct morse_char_s
  * @return morse_char_t
  */
 morse_char_t encode_morse(char ch);
-
-/**
- * @brief Get the character representation of a morse character
- *
- * @param ch
- * @return char
- */
-// char decode_morse(morse_char_t ch);
 
 #endif /* __MORSE_H */

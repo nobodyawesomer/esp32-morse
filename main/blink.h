@@ -14,12 +14,6 @@
 #include "led_strip.h"
 #include "morse.h"
 
-#define UNIT_MILLIS 100 ///< How long a unit takes in milliseconds
-
-#define SYMBOL_SPACE 1 ///< The gap between two symbols (dit/dah)
-#define CHAR_SPACE 3	 ///< The gap between two characters within a word
-#define WORD_SPACE 7	 ///< The gap between two words
-
 /**
  * @brief Blinks a morse character out to the given LED strip.
  * The strip must be initialized properly.

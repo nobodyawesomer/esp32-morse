@@ -33,12 +33,28 @@ menu "Application Configuration"
         help
             GPIO number (IOxx) to blink on and off or the RMT signal for the addressable LED.
             Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to blink.
-
-    config REFRESH_RATE
-        int "Refresh rate in ms"
-        range 1 3600000
-        default 50
+    
+    config INPUT_GPIO
+        int "Morse Input GPIO number"
+        range 0 48
+        default 10
         help
-            Define the refresh rate in milliseconds.
+            GPIO pin to take input on. Will be configured with an internal pull-up resistor;
+            connect to ground to input (active low).
+
+    config MORSE_UNIT_MS
+        int "Morse Unit Length (ms)"
+        range 1 9000
+        default 150
+        help
+            Defines how long a single Morse unit should take in milliseconds.
+            A dit/dot is one unit and a dah/dash is three.
+
+    config REFRESH_MS
+        int "Refresh Duration (ms)"
+        range 1 3600000
+        default 25
+        help
+            Define the refresh duration between an application loop in milliseconds.
 
 endmenu
