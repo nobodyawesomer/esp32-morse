@@ -42,10 +42,24 @@ menu "Application Configuration"
             GPIO pin to take input on. Will be configured with an internal pull-up resistor;
             connect to ground to input (active low).
 
+    config MORSE_CHAR_UNITS
+        int "Morse Units between Characters"
+        range 1 32
+        default 3
+        help
+            How many Morse Units to place/expect between two characters.
+    
+    config MORSE_SPACE_UNITS
+        int "Morse Units per Space"
+        range 1 32
+        default 7
+        help
+            How many Morse Units to count as a full space.
+
     config MORSE_UNIT_MS
         int "Morse Unit Length (ms)"
         range 1 9000
-        default 150
+        default 100
         help
             Defines how long a single Morse unit should take in milliseconds.
             A dit/dot is one unit and a dah/dash is three.

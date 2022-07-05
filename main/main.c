@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
 #include "freertos/FreeRTOS.h"
@@ -63,10 +64,11 @@ void app_main(void)
     configure_gpio();
     uint32_t duration_on = 0;
     uint32_t duration_off = 0;
+    bool has_sent_nil = false;
     /* TINI */
 
     // blink_char(pStrip_a, encode_morse('A'));
-    blink_str(pStrip_a, "CQ CQ MA NAME JEFF R");
+    blink_str(pStrip_a, "CQ CQ HELLO R");
 
     ESP_LOGI(TAG, "Idling the LED!");
     while (1)
@@ -75,22 +77,30 @@ void app_main(void)
         naive_tick_timer++;
         // TODO: consider interrupt-driven or smthn rather than this polling
         if (gpio_get_level(CONFIG_INPUT_GPIO))
-        { // physical HIGH means space (off)
+        { // physical HIGH means no connection (off) (logical low)
             duration_off += CONFIG_REFRESH_MS;
-            if (duration_on > 0) // only happen once, when switch happens
+            if (duration_off > (uint32_t)(CONFIG_MORSE_UNIT_MS * CONFIG_MORSE_SPACE_UNITS))
             {
+                process_space();  // counts as a space character
+                duration_off = 0; // reset
+            }
+            else if (!has_sent_nil && duration_off > (uint32_t)(CONFIG_MORSE_UNIT_MS * CONFIG_MORSE_CHAR_UNITS))
+            {
+                process_nil();
+                has_sent_nil = true;
+            }
+
+            if (duration_on > 0) // only happen on logical falling edge
+            {                    // Parse input symbol (dit/dah)
                 process_input(duration_on);
                 duration_on = 0;
+                has_sent_nil = false; // can send nil again once some character has been sent
             }
         }
         else
-        { // physical LOW means active input (on)
+        { // physical LOW means active input (on) (logical high)
             duration_on += CONFIG_REFRESH_MS;
-            if (duration_off > 0) // only happen once, when switch happens
-            {
-                process_space(duration_off);
-                duration_off = 0;
-            }
+            duration_off = 0; // duration off is always zero when on
             // ESP_LOGD(TAG, "Input high!");
         }
         vTaskDelay(CONFIG_REFRESH_MS / portTICK_PERIOD_MS);

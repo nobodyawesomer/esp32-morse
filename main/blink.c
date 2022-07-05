@@ -58,12 +58,12 @@ void blink_str(led_strip_t *strip, char *str)
 		if (str[i] == ' ')
 		{
 			ESP_LOGI(TAG, "SPACE");
-			wait_units(WORD_SPACE);
+			wait_units(CONFIG_MORSE_SPACE_UNITS);
 		}
 		else
 		{
 			blink_char(strip, encode_morse(str[i]));
-			wait_units(CHAR_SPACE); // TODO: cut trailing space after word end
+			wait_units(CONFIG_MORSE_CHAR_UNITS); // TODO: cut trailing space after word end
 		}
 	}
 }

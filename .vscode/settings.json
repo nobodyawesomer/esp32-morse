@@ -12,6 +12,8 @@
     "freertos.h": "c",
     "sdkconfig.h": "c",
     "stdio.h": "c",
-    "cstdio": "c"
+    "cstdio": "c",
+    "typeinfo": "c",
+    "*.ipp": "c"
   }
 }
