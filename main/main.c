@@ -13,7 +13,7 @@
 
 static const char *TAG = "Morse";
 
-/// I don't actually care to fix this at this point. Later.
+// I don't actually care to fix this at this point. Later.
 static uint32_t naive_tick_timer = 0;
 
 static led_strip_t *pStrip_a;
@@ -23,7 +23,7 @@ const uint32_t COLOR_CAP = 24;
 static void idle_led(void)
 {
     const float PI = 3.14159265358979323846264;
-    float theta = 2 * PI * naive_tick_timer / 64; // 'sample rate' 64 per period. 360 would mean naive_tick_timer is degrees.
+    float theta = 2 * PI * naive_tick_timer / 360; // treated as degrees
 #ifdef CONFIG_IDLE_ANIM_RAINBOW
     float red = (cos(theta) + 1) / 2;
     float green = (cos(theta + 2 * PI / 3) + 1) / 2;
