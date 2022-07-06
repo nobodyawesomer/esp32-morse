@@ -1,5 +1,5 @@
 /**
- * @file blink.c
+ * @file blink.h
  * @author Nobody (nobodyawesomer@proton.me)
  * @brief Blinking Morse
  * @version 0.1

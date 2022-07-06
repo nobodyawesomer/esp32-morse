@@ -1,3 +1,13 @@
+/**
+ * @file main.c
+ * @author Nobody (nobodyawesomer@proton.me)
+ * @brief Main entry to application, a Morse encoder and decoder.
+ * @version 0.1
+ * @date 2022-07-05
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
