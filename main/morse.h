@@ -35,6 +35,9 @@ typedef struct morse_char_s
 	uint8_t symbols[MAX_SYMBOLS_CHAR];
 } morse_char_t;
 
+/// Dictionary of characters and their morse representations
+extern const morse_char_t morsedict[];
+
 /**
  * @brief Get the morse representation of a character
  *

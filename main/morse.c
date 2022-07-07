@@ -11,7 +11,7 @@
 #include <stddef.h>
 #include "morse.h"
 
-const morse_char_t morses[] = {
+const morse_char_t morsedict[] = {
 		{'A', {DIT, DAH, NIL}},
 		{'B', {DAH, DIT, DIT, DIT, NIL}},
 		{'C', {DAH, DIT, DAH, DIT, NIL}},
@@ -49,17 +49,15 @@ const morse_char_t morses[] = {
 		{'7', {DAH, DAH, DIT, DIT, DIT, NIL}},
 		{'8', {DAH, DAH, DAH, DIT, DIT, NIL}},
 		{'9', {DAH, DAH, DAH, DAH, DIT, NIL}},
-
-		// {'\0', {NIL}} // nul terminated lol
 };
 
 morse_char_t encode_morse(char ch)
 {
-	const size_t len = sizeof(morses) / sizeof(morses[0]);
+	const size_t len = sizeof(morsedict) / sizeof(morsedict[0]);
 	for (size_t i = 0; i < len; i++)
 	{
-		if (morses[i].orig == ch)
-			return morses[i];
+		if (morsedict[i].orig == ch)
+			return morsedict[i];
 	}
 	return (morse_char_t){'\0', {NIL}};
 }
@@ -67,18 +65,18 @@ morse_char_t encode_morse(char ch)
 char decode_morse(uint8_t symbols[])
 {
 	// size_t possibles[]; // array of possible indices
-	const size_t len = sizeof(morses) / sizeof(morses[0]);
+	const size_t len = sizeof(morsedict) / sizeof(morsedict[0]);
 	for (size_t i = 0; i < len; i++)
 	{
 		// Compare loop
 		for (size_t j = 0; j < MAX_SYMBOLS_CHAR; j++)
 		{
-			if (symbols[j] != morses[i].symbols[j])
+			if (symbols[j] != morsedict[i].symbols[j])
 				goto OUTER;					 // 'continue outer'
 			if (symbols[j] == NIL) // if both are NIL, then return match
 				break;
 		}
-		return morses[i].orig;
+		return morsedict[i].orig;
 	OUTER:;
 	}
 	return '\0';
